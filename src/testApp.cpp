@@ -2,6 +2,8 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
+    ofLogToFile("logOFtes.txt", true);
+    
     myStatus.setup();
     myModel.setup(&myStatus);
     ofSetFrameRate(30);
@@ -119,7 +121,7 @@ void testApp::setNextMovie(){
     //currentMovie.setSynchronousSeeking(false);
     movieLoaded=true;
     currentMovie.play();
-    currentMovie.setPosition(0.70);
+    //currentMovie.setPosition(0.70);
     myStatus.transitionMode=false;
     circlesize=0;
     transitioncounter=0;

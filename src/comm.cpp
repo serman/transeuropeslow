@@ -21,8 +21,9 @@ void comm::readData(){
     int rawData2=0;
     int typeofMsg=0;
     unsigned char value[8];
-    
-    if(mySerial.available() >7){
+    if(mySerial.available() >0){
+        mySpeed=mySerial.readByte();
+/**     if(mySerial.available() >7){
         mySerial.readBytes(value,8);
         typeofMsg=value[0];
         seq= (value[1] << 8) +value[2];
@@ -30,7 +31,7 @@ void comm::readData(){
         rawData= (value[4] << 8) +value[5];
         rawData2= (value[6] << 8) +value[7];
         
-/**     unsigned short type= * (unsigned short *) value;
+        unsigned short type= * (unsigned short *) value;
         unsigned short speed=* (unsigned short *) (value+2);
         unsigned short seq= *(unsigned short *)(value+4);
         unsigned short rawvalue = *(unsigned short *)(value+6);
