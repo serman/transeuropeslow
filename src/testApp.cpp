@@ -5,7 +5,7 @@ void testApp::setup(){
     myStatus.setup();
     myModel.setup(&myStatus);
     ofSetFrameRate(30);
-    cout << myStatus.currentMovie ;
+    ofLog() << myStatus.currentMovie ;
     currentMovie.setPixelFormat(OF_PIXELS_RGB);
     decodeMode = OF_QTKIT_DECODE_PIXELS_AND_TEXTURE;
     currentMovie.loadMovie( "movies/"+myStatus.currentMovie, decodeMode);
@@ -73,12 +73,12 @@ void testApp::draw(){
 
     if((currentMovie.getDuration()-currentMovie.getPositionInSeconds())<5){
         myStatus.transitionMode=true;
-        //cout<< "transition "<< circlesize;
+        //ofLog()<< "transition "<< circlesize;
     }
     if(ofGetFrameNum()%25==0){
-        //cout << ofGetFrameRate() << "\n";
-        //cout << myStatus.bikeSpeed << "\n";
-        //cout << currentMovie.getPositionInSeconds() << " of " << currentMovie.getDuration() << " \n ";
+        //ofLog() << ofGetFrameRate() << "\n";
+        //ofLog() << myStatus.bikeSpeed << "\n";
+        //ofLog() << currentMovie.getPositionInSeconds() << " of " << currentMovie.getDuration() << " \n ";
     }
     if(myStatus.transitionMode==true){
         drawTransition();
@@ -109,9 +109,9 @@ void testApp::setNextMovie(){
     movieLoaded=false;
     myModel.advanceMovie();
     currentMovie.stop();
-    cout <<"Antes de closemovie" << myStatus.currentMovie << "\n";
+    ofLog() <<"Antes de closemovie" << myStatus.currentMovie << "\n";
     //currentMovie.closeMovie();
-    cout <<"fin -- " << myStatus.currentMovie << "\n";
+    ofLog() <<"fin -- " << myStatus.currentMovie << "\n";
     //myStatus.currentMovie= myModel.getCurrentMovie();
     
     currentMovie.loadMovie("movies/"+myStatus.currentMovie,decodeMode);
@@ -127,7 +127,7 @@ void testApp::setNextMovie(){
 
 void testApp::newResponse(ofxHttpResponse & response){
 	responseStr = ofToString(response.status) + ": " + (string)response.responseBody;
-    cout << response.responseBody << "\n";
+    ofLog() << response.responseBody << "\n";
     int remoteSpeed=ofToInt(response.responseBody);
     
     if(myStatus.remoteStatus==0 && remoteSpeed==1 ){ //turn on the motor
@@ -161,10 +161,10 @@ void testApp::keyPressed(int key){
     if (key == OF_KEY_LEFT){
         myStatus.motorStatus=true;
         myComm.sendToMotor();
-        cout << "key left";
+        ofLog() << "key left";
     }    
     else if (key == OF_KEY_RIGHT){
-        cout << "key right";
+        ofLog() << "key right";
                 myStatus.motorStatus=false;
         myComm.sendToMotor();
     }
@@ -192,7 +192,7 @@ void testApp::sendMidiChange(){
         if(current_note_value<0) current_note_value=0;
         if (current_note_value<sendNote ) current_note_value+=1;
         //if(ofGetFrameNum()%25==0)
-        //    cout << current_note_value << "\n";
+        //    ofLog() << current_note_value << "\n";
         if(current_note_value==0) current_note_value=1;
         midiOut.sendControlChange(1, 8, current_note_value);
     //}
@@ -260,7 +260,7 @@ void testApp::windowResized(int w, int h){
 
 //--------------------------------------------------------------
 void testApp::gotMessage(ofMessage msg){
-    cout << msg.message;
+    ofLog() << msg.message;
     //midiOut.sendNoteOn(1, myStatus.currentCity,  current_note_value);
     oscSendEOV();
 }

@@ -46,7 +46,7 @@ void comm::readData(){
         mySerial.flush();
         //printf("%x %x ", value[0], value[4] );
         //cout << value;
-        cout << seq<< " : " << myStatus->bikeSpeed << " valor leido "<< rawData  << " valor leido2 "<< rawData2 <<" \n";
+        ofLog() << seq<< " : " << myStatus->bikeSpeed << " valor leido "<< rawData  << " valor leido2 "<< rawData2 <<" \n";
         
     }
     

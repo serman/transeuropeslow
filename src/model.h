@@ -50,7 +50,7 @@ public:
         //"lvp-zonabonita.mp4", //25
         //"lvp-tabacalera-almacen.mpg"
     };
-    int order[NUMBER_OF_MOVIES] ={0,16,1,18,2,22,3,24,5,13,6,19,7,15,8,9,10,11,17,12,14,20,14,21};
+    int order[NUMBER_OF_MOVIES] ={0,16,1,18,2,22,3,24,5,13,6,19,7,15,8,9,10,11,17,12,14,20,14,21}; // 14 se repite
     systemStatus *myStatus;
     int sequenceNext;
 };
