@@ -10,7 +10,7 @@
 void comm::setup(systemStatus * status){
     myStatus=status;
     mySerial.enumerateDevices();
-    myStatus->arduinoConnected = mySerial.setup(0, 4800);
+    myStatus->arduinoConnected = mySerial.setup(0, 9600);
     
 }
 
@@ -47,7 +47,7 @@ void comm::readData(){
         mySerial.flush();
         //printf("%x %x ", value[0], value[4] );
         //cout << value;
-        ofLog() << seq<< " : " << myStatus->bikeSpeed << " valor leido "<< rawData  << " valor leido2 "<< rawData2 <<" \n";
+        ofLog() << " : " << myStatus->bikeSpeed <<" \n";
         
     }
     
