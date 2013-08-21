@@ -67,8 +67,8 @@ void testApp::update(){
     if(ofGetFrameNum()%1500==0)        myComm.sendToMotor();
     if(ofGetFrameNum()%1503==0)        myComm.sendToMotor();
     if(ofGetFrameNum()%220==0) {
-        if ( myStatus.CITY=="hsk" ) getRemoteMovie();
-        getRemoteSpeed(); //cada 4 segs aprox
+       // if ( myStatus.CITY=="hsk" ) getRemoteMovie();
+        //getRemoteSpeed(); //cada 4 segs aprox
     }
 }
 
@@ -152,12 +152,12 @@ void testApp::newResponse(ofxHttpResponse & response){
 
         int remoteSpeed=ofToInt(response.responseBody);
                     cout<< "es speed " << remoteSpeed;
-        if(myStatus.remoteStatus==0 && remoteSpeed==1 ){ //turn on the motor
+        if(remoteSpeed>=1 ){ //turn on the motor
             myStatus.motorStatus=true;
             myComm.sendToMotor();
                 ofLog() << "motor remoto encendido" << "\n";
         }
-        if(myStatus.remoteStatus==1 && remoteSpeed==0 ) {//turn off the motor
+        if( remoteSpeed==0 ) {//turn off the motor
             myStatus.motorStatus=false;
             myComm.sendToMotor();
             ofLog() << "motor remoto pagado" << "\n";
@@ -187,7 +187,9 @@ void testApp::getRemoteSpeed(){
         form.addFormField("motor", ofToString(myStatus.motorStatus) );
         form.addFormField("speed", ofToString(myStatus.bikeSpeed ) );
         form.addFormField("arduino", ofToString(myStatus.arduinoConnected ) );
-        form.addFormField("movie", ofToString(myStatus.currentMovie ) );
+        
+        vector<string> result=ofSplitString(myStatus.currentMovie,".mp4");
+        form.addFormField("movie", ofToString(result[0]));
     }
     
     form.method = OFX_HTTP_GET;
