@@ -14,6 +14,7 @@ void comm::setup(systemStatus * status){
         myStatus->arduinoConnected = mySerial.setup(myStatus->arduinoport, 4800);
     else
         myStatus->arduinoConnected = mySerial.setup(myStatus->arduinoport, 9600);
+    oflog() << "arduino connected on port" << myStatus->arduinoport;
     mySerial.flush();
 }
 

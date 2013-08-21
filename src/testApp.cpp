@@ -20,8 +20,8 @@ void testApp::setup(){
     
     ofAddListener(httpUtils.newResponseEvent,this,&testApp::newResponse);
 	httpUtils.start();
-    getRemoteMovie();
-    getRemoteSpeed();
+    //getRemoteMovie();
+    //getRemoteSpeed();
     
     
     current_note_value=0;
@@ -147,11 +147,11 @@ void testApp::setNextMovie(){
 
 void testApp::newResponse(ofxHttpResponse & response){
     if(ofIsStringInString( response.url, "getSpeed") ){
-        cout<< "es speed";
+
         responseStr = ofToString(response.status) + ": " + (string)response.responseBody;
 
         int remoteSpeed=ofToInt(response.responseBody);
-        
+                    cout<< "es speed " << remoteSpeed;
         if(myStatus.remoteStatus==0 && remoteSpeed==1 ){ //turn on the motor
             myStatus.motorStatus=true;
             myComm.sendToMotor();
@@ -178,11 +178,15 @@ void testApp::drawBannerInfo(){
 
 void testApp::getRemoteSpeed(){
     ofxHttpForm form;
-    if(myStatus.CITY=="hsk") form.action = "http://transeuropeslow.fact.co.uk/getSpeedLiverpool";
-    else  form.action = "http://transeuropeslow.fact.co.uk/getSpeedHsk";
-	form.method = OFX_HTTP_GET;
-	form.addFormField("number", ofToString(myStatus.bikeSpeed ) );
-	httpUtils.addForm(form);
+    if(myStatus.CITY=="hsk"){
+        form.action = "http://transeuropeslow.fact.co.uk/getSpeedLiverpool";
+        	form.addFormField("number", ofToString(myStatus.bikeSpeed ) );
+    }
+    else
+        form.action = "http://transeuropeslow.fact.co.uk/getSpeedHsk";
+    
+    form.method = OFX_HTTP_GET;
+    httpUtils.addForm(form);
 }
 
 void testApp::getRemoteMovie(){
