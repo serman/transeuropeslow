@@ -34,6 +34,7 @@ void systemStatus::setup(){
     logmode=settings.getValue("settings:log", 0);
     arduinoport=settings.getValue("settings:port", 0);
     offline=settings.getValue("settings:offline", 1);
+    fullscreen=settings.getValue("settings:fullscreen", 0);
     ofLog() <<" current city is " << CITY;
 
     

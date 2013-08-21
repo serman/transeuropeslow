@@ -6,6 +6,7 @@ void testApp::setup(){
     myModel.setup(&myStatus);
     ofSetFrameRate(30);
     if(myStatus.logmode)        ofLogToFile("logOFtes.txt", true);
+    ofSetFullscreen(myStatus.fullscreen);
     
     ofLog() << myStatus.currentMovie ;
     currentMovie.setPixelFormat(OF_PIXELS_RGB);

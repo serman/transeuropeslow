@@ -40,6 +40,7 @@ class systemStatus{
         bool logmode;
     bool offline;
     int arduinoport;
+    bool fullscreen;
     
 };
 #endif /* defined(__tes_hsk__systemStatus__) */
