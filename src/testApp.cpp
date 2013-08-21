@@ -182,8 +182,13 @@ void testApp::getRemoteSpeed(){
         form.action = "http://transeuropeslow.fact.co.uk/getSpeedLiverpool";
         	form.addFormField("number", ofToString(myStatus.bikeSpeed ) );
     }
-    else
-        form.action = "http://transeuropeslow.fact.co.uk/getSpeedHsk";
+    else{
+        form.action = "http://127.0.0.1/getSpeedHsk";
+        form.addFormField("motor", ofToString(myStatus.motorStatus) );
+        form.addFormField("speed", ofToString(myStatus.bikeSpeed ) );
+        form.addFormField("arduino", ofToString(myStatus.arduinoConnected ) );
+        form.addFormField("movie", ofToString(myStatus.currentMovie ) );
+    }
     
     form.method = OFX_HTTP_GET;
     httpUtils.addForm(form);
