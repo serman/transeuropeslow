@@ -13,8 +13,8 @@ void testApp::setup(){
     currentMovie.loadMovie( "movies/"+myStatus.currentMovie, decodeMode);
 
     currentMovie.setLoopState(OF_LOOP_NONE);
-	 currentMovie.play();
-        movieLoaded=true;
+    currentMovie.play();
+    movieLoaded=true;
     currentMovie.setSynchronousSeeking(false);
     myComm.setup( &myStatus );
     
@@ -66,9 +66,9 @@ void testApp::update(){
     
     if(ofGetFrameNum()%1500==0)        myComm.sendToMotor();
     if(ofGetFrameNum()%1503==0)        myComm.sendToMotor();
-    if(ofGetFrameNum()%220==0) {
-       // if ( myStatus.CITY=="hsk" ) getRemoteMovie();
-        //getRemoteSpeed(); //cada 4 segs aprox
+    if(ofGetFrameNum()%220==0 && !myStatus.offline) {
+        if ( myStatus.CITY=="hsk" ) getRemoteMovie();
+        getRemoteSpeed(); //cada 4 segs aprox
     }
 }
 

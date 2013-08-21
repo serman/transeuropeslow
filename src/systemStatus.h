@@ -38,6 +38,7 @@ class systemStatus{
         int bannerTmpWidth=0;
         std::string    liverpoolMovie="";
         bool logmode;
+    bool offline;
     int arduinoport;
     
 };

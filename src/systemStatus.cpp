@@ -33,7 +33,7 @@ void systemStatus::setup(){
     CITY=settings.getValue("settings:city", "");
     logmode=settings.getValue("settings:log", 0);
     arduinoport=settings.getValue("settings:port", 0);
-
+    offline=settings.getValue("settings:offline", 1);
     ofLog() <<" current city is " << CITY;
 
     
