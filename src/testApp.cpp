@@ -202,7 +202,7 @@ void testApp::getRemoteMovie(){
     if(myStatus.CITY=="hsk") form.action = "http://transeuropeslow.fact.co.uk/getMovieLiverpool";
     else return;
 	form.method = OFX_HTTP_GET;
-	//form.addFormField("number", ofToString(myStatus.bikeSpeed ) );
+	form.addFormField("hsk_movie", myStatus.currentMovie );
 	httpUtils.addForm(form);
 }
 
