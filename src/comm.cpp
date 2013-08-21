@@ -11,9 +11,9 @@ void comm::setup(systemStatus * status){
     myStatus=status;
     mySerial.enumerateDevices();
     if(myStatus->CITY=="hsk")
-        myStatus->arduinoConnected = mySerial.setup(0, 4800);
+        myStatus->arduinoConnected = mySerial.setup(myStatus->arduinoport, 4800);
     else
-        myStatus->arduinoConnected = mySerial.setup(0, 9600);
+        myStatus->arduinoConnected = mySerial.setup(myStatus->arduinoport, 9600);
     mySerial.flush();
 }
 

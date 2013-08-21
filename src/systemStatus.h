@@ -37,7 +37,8 @@ class systemStatus{
         int remoteStatus;
         int bannerTmpWidth=0;
         std::string    liverpoolMovie="";
-
+        bool logmode;
+    int arduinoport;
     
 };
 #endif /* defined(__tes_hsk__systemStatus__) */

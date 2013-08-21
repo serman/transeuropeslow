@@ -5,6 +5,8 @@ void testApp::setup(){
     myStatus.setup();
     myModel.setup(&myStatus);
     ofSetFrameRate(30);
+    if(myStatus.logmode)        ofLogToFile("logOFtes.txt", true);
+    
     ofLog() << myStatus.currentMovie ;
     currentMovie.setPixelFormat(OF_PIXELS_RGB);
     decodeMode = OF_QTKIT_DECODE_PIXELS_AND_TEXTURE;
@@ -64,7 +66,7 @@ void testApp::update(){
     
     if(ofGetFrameNum()%1500==0)        myComm.sendToMotor();
     if(ofGetFrameNum()%1503==0)        myComm.sendToMotor();
-    if(ofGetFrameNum()%100==0) {
+    if(ofGetFrameNum()%220==0) {
         if ( myStatus.CITY=="hsk" ) getRemoteMovie();
         getRemoteSpeed(); //cada 4 segs aprox
     }

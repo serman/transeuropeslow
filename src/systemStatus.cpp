@@ -24,11 +24,16 @@ void systemStatus::setup(){
     setNextMovie=false;
     currentMovie="lvp-barrio2.mpg";
     currentCity=MADRID;
-    ofxXmlSettings settings;
     
+    
+    ofxXmlSettings settings;
+
     if(!settings.loadFile("settings.xml"))
         ofLog() <<" SETTINGS FILE NOT FOUND"     ;
     CITY=settings.getValue("settings:city", "");
+    logmode=settings.getValue("settings:log", 0);
+    arduinoport=settings.getValue("settings:port", 0);
+
     ofLog() <<" current city is " << CITY;
 
     

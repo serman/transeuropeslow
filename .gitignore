@@ -3,3 +3,4 @@
 */.DS_Store
 bin/data/movies
 bin/data/logOFtes.txt
+bin/data/settings.xml
