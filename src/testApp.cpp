@@ -19,14 +19,15 @@ void testApp::setup(){
     ofAddListener(httpUtils.newResponseEvent,this,&testApp::newResponse);
 	httpUtils.start();
     getRemoteMovie();
+    getRemoteSpeed();
     
     
     current_note_value=0;
     // print the available output ports to the console
-	midiOut.listPorts(); // via instance
+//	midiOut.listPorts(); // via instance
 	//ofxMidiOut::listPorts(); // via static too	
 	// connect
-	midiOut.openPort(0);	// by number
+//	midiOut.openPort(0);	// by number
 	//midiOut.openPort("IAC Driver Pure Data In");	// by name
 	//midiOut.openVirtualPort("ofxMidiOut");		// open a virtual port
     
@@ -52,17 +53,21 @@ void testApp::update(){
         else
             currentMovie.setPaused(false);
     }
-    if(myStatus.arduinoConnected && ofGetFrameNum()%3==0)
+    if(myStatus.arduinoConnected && ofGetFrameNum()%1==0)
         myComm.readData();
     
     if(currentMovie.getPosition() >0.99 || circlesize>=800){
         setNextMovie();
     }
     
-    if(ofGetFrameNum()%1==0)           sendMidiChange();
+ //   if(ofGetFrameNum()%1==0)           sendMidiChange();
     
     if(ofGetFrameNum()%1500==0)        myComm.sendToMotor();
     if(ofGetFrameNum()%1503==0)        myComm.sendToMotor();
+    if(ofGetFrameNum()%100==0) {
+        if ( myStatus.CITY=="hsk" ) getRemoteMovie();
+        getRemoteSpeed(); //cada 4 segs aprox
+    }
 }
 
 //--------------------------------------------------------------
@@ -83,7 +88,10 @@ void testApp::draw(){
     if(myStatus.transitionMode==true){
         drawTransition();
         
-    }    
+    }
+    else if(ofGetFrameNum()%1500 < 330){
+        drawBanner(ofGetFrameNum()%1500);
+    }
 }
 
 void testApp::drawTransition(){
@@ -95,8 +103,7 @@ void testApp::drawTransition(){
 
     if(transitioncounter>40){
         ofSetColor(0, 0, 0);
-        ofCircle(640, 360, circlesize);
-        
+        ofCircle(640, 360, circlesize);        
         if(circlesize<800){
             circlesize+=24;
         }
@@ -104,14 +111,25 @@ void testApp::drawTransition(){
     
 }
 
+void testApp::drawBanner(int t){ //tiempo de 1 a 300 en fps en segs /25
+    ofSetColor(40, 40, 40);
+    ofRect(0,720-myStatus.bannerTmpWidth,1280,myStatus.bannerTmpWidth);
+    if(myStatus.bannerTmpWidth<120 && t<249)
+        myStatus.bannerTmpWidth+=2;
+    
+    if(t>249 && myStatus.bannerTmpWidth>0 ){
+        myStatus.bannerTmpWidth-=2;
+    }
+    
+}
 
 void testApp::setNextMovie(){
     movieLoaded=false;
     myModel.advanceMovie();
     currentMovie.stop();
-    ofLog() <<"Antes de closemovie" << myStatus.currentMovie << "\n";
+//ofLog() <<"Antes de closemovie" << myStatus.currentMovie << "\n";
     //currentMovie.closeMovie();
-    ofLog() <<"fin -- " << myStatus.currentMovie << "\n";
+//    ofLog() <<"fin -- " << myStatus.currentMovie << "\n";
     //myStatus.currentMovie= myModel.getCurrentMovie();
     
     currentMovie.loadMovie("movies/"+myStatus.currentMovie,decodeMode);
@@ -119,26 +137,35 @@ void testApp::setNextMovie(){
     //currentMovie.setSynchronousSeeking(false);
     movieLoaded=true;
     currentMovie.play();
-    currentMovie.setPosition(0.70);
+    currentMovie.setPosition(0.75);
     myStatus.transitionMode=false;
     circlesize=0;
     transitioncounter=0;
 }
 
 void testApp::newResponse(ofxHttpResponse & response){
-	responseStr = ofToString(response.status) + ": " + (string)response.responseBody;
-    ofLog() << response.responseBody << "\n";
-    int remoteSpeed=ofToInt(response.responseBody);
+    if(ofIsStringInString( response.url, "getSpeed") ){
+        cout<< "es speed";
+        responseStr = ofToString(response.status) + ": " + (string)response.responseBody;
+
+        int remoteSpeed=ofToInt(response.responseBody);
+        
+        if(myStatus.remoteStatus==0 && remoteSpeed==1 ){ //turn on the motor
+            myStatus.motorStatus=true;
+            myComm.sendToMotor();
+                ofLog() << "motor remoto encendido" << "\n";
+        }
+        if(myStatus.remoteStatus==1 && remoteSpeed==0 ) {//turn off the motor
+            myStatus.motorStatus=false;
+            myComm.sendToMotor();
+            ofLog() << "motor remoto pagado" << "\n";
+        }
+        myStatus.remoteStatus=remoteSpeed;
     
-    if(myStatus.remoteStatus==0 && remoteSpeed==1 ){ //turn on the motor
-        myStatus.motorStatus=true;
-        myComm.sendToMotor();
+    }else{ // nos est‡ llegando la pelicula
+        myStatus.liverpoolMovie=ofToString(response.responseBody);      
+        
     }
-    if(myStatus.remoteStatus==1 && remoteSpeed==0 ) {//turn off the motor
-        myStatus.motorStatus=false;
-        myComm.sendToMotor();
-    }
-    myStatus.remoteStatus=remoteSpeed;
 }
 
 void testApp::drawBannerInfo(){
@@ -147,13 +174,24 @@ void testApp::drawBannerInfo(){
     
 }
 
-void testApp::getRemoteMovie(){
+void testApp::getRemoteSpeed(){
     ofxHttpForm form;
-	form.action = "http://transeuropeslow.fact.co.uk/getSpeed";
+    if(myStatus.CITY=="hsk") form.action = "http://transeuropeslow.fact.co.uk/getSpeedLiverpool";
+    else  form.action = "http://transeuropeslow.fact.co.uk/getSpeedHsk";
 	form.method = OFX_HTTP_GET;
 	form.addFormField("number", ofToString(myStatus.bikeSpeed ) );
 	httpUtils.addForm(form);
 }
+
+void testApp::getRemoteMovie(){
+    ofxHttpForm form;
+    if(myStatus.CITY=="hsk") form.action = "http://transeuropeslow.fact.co.uk/getMovieLiverpool";
+    else return;
+	form.method = OFX_HTTP_GET;
+	//form.addFormField("number", ofToString(myStatus.bikeSpeed ) );
+	httpUtils.addForm(form);
+}
+
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){ 
     
@@ -169,7 +207,7 @@ void testApp::keyPressed(int key){
         myComm.sendToMotor();
     }
     else if (key == OF_KEY_UP){
-        sendMidiNote();
+       // sendMidiNote();
     }
     
     else{
@@ -201,7 +239,8 @@ void testApp::sendMidiChange(){
 
 void testApp::getRemoteStatus(){
     
-    std::string url = "http://transeuropeslow.fact.co.uk/getStatus";
+  /**
+   std::string url = "http://transeuropeslow.fact.co.uk/getStatus";
 	
     
 	// Now parse the JSON
@@ -215,7 +254,7 @@ void testApp::getRemoteStatus(){
         
 	} else {
 		ofLog()  << "Failed to parse JSON" << endl;
-	}
+	} **/
 
 
 }
@@ -223,6 +262,8 @@ void testApp::getRemoteStatus(){
 void testApp::oscSendEOV(){    
     ofxOscMessage m;
     m.setAddress("/video");
+    vector<string> result=ofSplitString(myStatus.currentMovie,".mp4");
+    ofLog() << result[0] ;
     m.addStringArg(myStatus.currentMovie);
     sender.sendMessage(m);
 

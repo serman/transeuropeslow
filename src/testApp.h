@@ -25,8 +25,9 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-    
+        void drawBanner(int t);
         void getRemoteMovie();
+    void getRemoteSpeed();
         void newResponse(ofxHttpResponse & response);
         void sendMidiNote();
         void oscSendEOV();

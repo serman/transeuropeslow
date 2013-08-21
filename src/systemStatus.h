@@ -33,7 +33,10 @@ class systemStatus{
         bool setNextMovie;
         int currentCity;
         std::string currentMovie;
+        std::string CITY; // o liverpool
         int remoteStatus;
+        int bannerTmpWidth=0;
+        std::string    liverpoolMovie="";
 
     
 };

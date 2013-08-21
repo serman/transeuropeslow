@@ -7,6 +7,7 @@
 //
 #include <string>
 #include "systemStatus.h"
+#include "ofxXmlSettings.h"
 
 void systemStatus::setup(){
     motorStatus=false;
@@ -23,5 +24,12 @@ void systemStatus::setup(){
     setNextMovie=false;
     currentMovie="lvp-barrio2.mpg";
     currentCity=MADRID;
+    ofxXmlSettings settings;
+    
+    if(!settings.loadFile("settings.xml"))
+        ofLog() <<" SETTINGS FILE NOT FOUND"     ;
+    CITY=settings.getValue("settings:city", "");
+    ofLog() <<" current city is " << CITY;
+
     
 }

@@ -11,15 +11,18 @@
 void model::setup(systemStatus * status){
     myStatus=status;
     //sequence={"mad-huerto.mp4", "mad-boeticher1.mp4", "mad-arganzuela-rampa.mp4","mad-calleIndustrial.mp4","mad-casademcapocoches.mp4","mad-ecobulevar.mp4","mad-ensanche1.mp4"};
-    sequenceNext=10;
+    sequenceNext=0;
     myStatus->currentMovie = getCurrentMovie();
     
     
 }
 
+void model::setThisMovie(std::string moviename){}
+void model::setThisMovie(int movienumber ){}
+
 void model::advanceMovie(){
     sequenceNext++;
-    if ( sequenceNext >= NUMBER_OF_MOVIES-1 ){
+    if ( sequenceNext >= NUMBER_OF_MOVIES ){
         sequenceNext=0;
     }
     myStatus->currentMovie=sequence[ order[sequenceNext] ];
