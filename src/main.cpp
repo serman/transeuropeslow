@@ -1,13 +1,23 @@
 #include "ofMain.h"
 #include "testApp.h"
 #include "ofAppGlutWindow.h"
+#include "ofxXmlSettings.h"
 
 //========================================================================
 int main( ){
 
     ofAppGlutWindow window;
-	ofSetupOpenGL(&window, 1280,720, OF_WINDOW);			// <-------- setup the GL context
-
+	
+    ofxXmlSettings settings;
+    
+    int w=1280;
+    int h = 720;
+    std:string ciudad=settings.getValue("settings:city", "hsk");
+    if (ciudad!="hsk"){
+        w=1360;
+        h=768;
+    }
+    ofSetupOpenGL(&window, w,h, OF_WINDOW);			// <-------- setup the GL context
 	// this kicks off the running of my app
 	// can be OF_WINDOW or OF_FULLSCREEN
 	// pass in width and height too:

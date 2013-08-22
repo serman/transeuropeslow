@@ -35,16 +35,17 @@ void testApp::setup(){
 	//midiOut.openVirtualPort("ofxMidiOut");		// open a virtual port
     
     circlesize=0;
-    verdana30.loadFont("verdana.ttf", 100, true, true);
+    verdana30.loadFont("AlteHaasGroteskBold.ttf", 170, true, true);
 	verdana30.setLineHeight(34.0f);
 	verdana30.setLetterSpacing(1.035);
 
-    verdana_small.loadFont("verdana.ttf",20,true,true);
+    verdana_small.loadFont("verdana.ttf",18,true,true);
         ofSetCircleResolution(100);
     
     sender.setup("127.0.0.1", 12001);
     //getRemoteStatus();
-    
+        if(movieLoaded) currentMovie.draw(0,0);
+        ofBackground(0, 0, 0);
 }
 
 //--------------------------------------------------------------
@@ -59,7 +60,7 @@ void testApp::update(){
     if(myStatus.arduinoConnected && ofGetFrameNum()%1==0)
         myComm.readData();
     
-    if(currentMovie.getPosition() >0.99 || circlesize>=800){
+    if(currentMovie.getPosition() >0.99 || circlesize>=900){
         setNextMovie();
     }
     
@@ -71,13 +72,15 @@ void testApp::update(){
         if ( myStatus.CITY=="hsk" ) getRemoteMovie();
         getRemoteSpeed(); //cada 4 segs aprox
     }
+    
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
-    ofBackground(0, 0, 0);
+
     ofSetHexColor(0xFFFFFF);
-    if(movieLoaded) currentMovie.draw(0,0);
+    if(myStatus.CITY=="hsk")    if(movieLoaded) currentMovie.draw(0,0);
+    else {if(movieLoaded) currentMovie.draw(0,0,1360,768);}
 
     if((currentMovie.getDuration()-currentMovie.getPositionInSeconds())<5){
         myStatus.transitionMode=true;
@@ -88,26 +91,27 @@ void testApp::draw(){
         //ofLog() << myStatus.bikeSpeed << "\n";
         //ofLog() << currentMovie.getPositionInSeconds() << " of " << currentMovie.getDuration() << " \n ";
     }
+    if(ofGetFrameNum()%1800 < 400){
+        drawBanner(ofGetFrameNum()%1800);
+    }
     if(myStatus.transitionMode==true){
         drawTransition();
         
-    }
-    else if(ofGetFrameNum()%1500 < 330){
-        drawBanner(ofGetFrameNum()%1500);
-    }
+    }    
 }
 
 void testApp::drawTransition(){
 
     if(ofGetFrameNum()%40 <20){
-        verdana30.drawString("JUMPING!", 300, 300);
+        ofSetColor(255,255,255,200);
+        verdana30.drawString("JUMPING!", 80, 350);
         transitioncounter+=1;        
     }
 
-    if(transitioncounter>40){
+    if(transitioncounter>44){
         ofSetColor(0, 0, 0);
         ofCircle(640, 360, circlesize);        
-        if(circlesize<800){
+        if(circlesize<900){
             circlesize+=24;
         }
     }
@@ -115,13 +119,25 @@ void testApp::drawTransition(){
 }
 
 void testApp::drawBanner(int t){ //tiempo de 1 a 300 en fps en segs /25
-    ofSetColor(40, 40, 40);
-    ofRect(0,720-myStatus.bannerTmpWidth,1280,myStatus.bannerTmpWidth);
-    if(myStatus.bannerTmpWidth<120 && t<249)
-        myStatus.bannerTmpWidth+=2;
+    int w=1280;
+    int h= 720;
+    if (myStatus.CITY!="hsk"){
+        w = 1360 ;
+        h = 768  ;
+    }
+    ofSetColor(60, 60, 60, 60);
+    ofRect(0,h-myStatus.bannerTmpWidth,w,myStatus.bannerTmpWidth);
     
-    if(t>249 && myStatus.bannerTmpWidth>0 ){
+    if(myStatus.bannerTmpWidth<80 && t<349)
+        myStatus.bannerTmpWidth+=2;
+
+    
+    else if(t>349 && myStatus.bannerTmpWidth>0 ){
         myStatus.bannerTmpWidth-=2;
+    }
+    if (myStatus.bannerTmpWidth>77){
+        ofSetColor(255);
+        verdana_small.drawString("To read about what you see on this video, type http://tes.fact.co.uk on your mobile phone", 70, h-30);
     }
     
 }
@@ -140,7 +156,7 @@ void testApp::setNextMovie(){
     //currentMovie.setSynchronousSeeking(false);
     movieLoaded=true;
     currentMovie.play();
-    currentMovie.setPosition(0.75);
+    if(myStatus.fastmode) currentMovie.setPosition(0.75);
     myStatus.transitionMode=false;
     circlesize=0;
     transitioncounter=0;
