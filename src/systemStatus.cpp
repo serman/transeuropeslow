@@ -24,7 +24,7 @@ void systemStatus::setup(){
     setNextMovie=false;
     currentMovie="lvp-barrio2.mpg";
     currentCity=MADRID;
-    
+    nextAutoTurnOff=1600;
     
     ofxXmlSettings settings;
 
@@ -37,7 +37,15 @@ void systemStatus::setup(){
     fullscreen=settings.getValue("settings:fullscreen", 0);
     fastmode=settings.getValue("settings:fastmode", 0);
     
-    ofLog() <<" current city is " << CITY;
+    ofLog() << " current city is " << CITY;
+    
 
     
+}
+
+
+void systemStatus::setMotorTimer(){
+    if(ofGetFrameNum()>nextAutoTurnOff ){
+        motorStatus=false;        
+    }
 }

@@ -18,7 +18,8 @@
 class systemStatus{
     public:
         void setup();
-
+        void setMotorTimer();
+    
         bool motorStatus;
         int bikeSpeed;
         int remoteUsers;
@@ -42,5 +43,7 @@ class systemStatus{
     int arduinoport;
     bool fullscreen;
     bool fastmode;
+    int nextAutoTurnOff=1000; 
+
 };
 #endif /* defined(__tes_hsk__systemStatus__) */

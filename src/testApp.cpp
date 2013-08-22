@@ -50,6 +50,7 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update(){
+    myStatus.setMotorTimer();
     if(movieLoaded==true){
         currentMovie.update();
         if(myStatus.bikeSpeed==0)
@@ -66,8 +67,8 @@ void testApp::update(){
     
  //   if(ofGetFrameNum()%1==0)           sendMidiChange();
     
-    if(ofGetFrameNum()%1500==0)        myComm.sendToMotor();
-    if(ofGetFrameNum()%1503==0)        myComm.sendToMotor();
+    if(ofGetFrameNum()%1300==0)        myComm.sendToMotor();
+    if(ofGetFrameNum()%1303==0)        myComm.sendToMotor();
     if(ofGetFrameNum()%220==0 && !myStatus.offline) {
         if ( myStatus.CITY=="hsk" ) getRemoteMovie();
         getRemoteSpeed(); //cada 4 segs aprox
@@ -176,6 +177,7 @@ void testApp::newResponse(ofxHttpResponse & response){
         if(remoteSpeed>=1 ){ //turn on the motor
             myStatus.motorStatus=true;
             myComm.sendToMotor();
+            myStatus.nextAutoTurnOff=ofGetFrameNum()+1000;
                 ofLog() << "motor remoto encendido" << "\n";
         }
         if( remoteSpeed==0 ) {//turn off the motor
@@ -232,6 +234,7 @@ void testApp::keyPressed(int key){
     
     if (key == OF_KEY_LEFT){
         myStatus.motorStatus=true;
+        myStatus.nextAutoTurnOff=ofGetFrameNum()+1000;
         myComm.sendToMotor();
         ofLog() << "key left";
     }    
