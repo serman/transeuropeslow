@@ -79,8 +79,12 @@ void testApp::update(){
 void testApp::draw(){
 
     ofSetHexColor(0xFFFFFF);
-    if(myStatus.CITY=="hsk")    if(movieLoaded) currentMovie.draw(0,0);
-    else {if(movieLoaded) currentMovie.draw(0,0,1360,768);}
+    if(myStatus.CITY=="hsk") {
+        if(movieLoaded) currentMovie.draw(0,0);
+    }
+    else {
+        if(movieLoaded) currentMovie.draw(0,0,1360,768);
+    }
 
     if((currentMovie.getDuration()-currentMovie.getPositionInSeconds())<5){
         myStatus.transitionMode=true;
