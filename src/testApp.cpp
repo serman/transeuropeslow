@@ -39,7 +39,7 @@ void testApp::setup(){
 	verdana30.setLineHeight(34.0f);
 	verdana30.setLetterSpacing(1.035);
 
-    verdana_small.loadFont("verdana.ttf",18,true,true);
+    verdana_small.loadFont("verdana.ttf",17,true,true);
         ofSetCircleResolution(100);
     
     sender.setup("127.0.0.1", 12001);
@@ -109,7 +109,7 @@ void testApp::drawTransition(){
 
     if(ofGetFrameNum()%40 <20){
         ofSetColor(255,255,255,200);
-        verdana30.drawString("JUMPING!", 80, 350);
+        verdana30.drawString("JUMPING!", 70, 350);
         transitioncounter+=1;        
     }
 
@@ -142,7 +142,7 @@ void testApp::drawBanner(int t){ //tiempo de 1 a 300 en fps en segs /25
     }
     if (myStatus.bannerTmpWidth>77){
         ofSetColor(255);
-        verdana_small.drawString("To read about what you see on this video, type http://tes.fact.co.uk on your mobile phone", 70, h-30);
+        verdana_small.drawString("To read about what you see on this video, type http://tes.fact.co.uk on your mobile phone", 70, h-33);
     }
     
 }
