@@ -34,11 +34,12 @@ class systemStatus{
         bool setNextMovie;
         int currentCity;
         std::string currentMovie;
-        std::string CITY; // o liverpool
+        std::string CITY; // mad hsk lvp
         int remoteStatus;
         int bannerTmpWidth=0;
         std::string    liverpoolMovie="";
         bool logmode;
+    bool midienabled;
     bool offline;
     int arduinoport;
     bool fullscreen;

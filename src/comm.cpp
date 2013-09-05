@@ -10,7 +10,7 @@
 void comm::setup(systemStatus * status){
     myStatus=status;
     mySerial.enumerateDevices();
-    if(myStatus->CITY=="hsk")
+    if(myStatus->CITY=="hsk" || myStatus->CITY=="mad")
         myStatus->arduinoConnected = mySerial.setup(myStatus->arduinoport, 4800);
     else
         myStatus->arduinoConnected = mySerial.setup(myStatus->arduinoport, 9600);
@@ -25,7 +25,7 @@ void comm::readData(){
     int rawData2=0;
     int typeofMsg=0;
     unsigned char value[8];
-    if(myStatus->CITY=="hsk"){
+    if(myStatus->CITY=="hsk" || myStatus->CITY=="mad"){
         if(mySerial.available() >7){
             mySerial.readBytes(value,8);
             typeofMsg=value[0];

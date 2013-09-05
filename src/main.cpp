@@ -13,8 +13,12 @@ int main( ){
     int w=1280;
     int h = 720;
     std:string ciudad=settings.getValue("settings:city", "hsk");
-    if (ciudad!="hsk"){
+    if (ciudad=="lvp"){
         w=1360;
+        h=768;
+    }
+    if (ciudad=="mad"){
+        w=1024;
         h=768;
     }
     ofSetupOpenGL(&window, w,h, OF_WINDOW);			// <-------- setup the GL context

@@ -29,10 +29,10 @@ void model::advanceMovie(){
     
     if(ofIsStringInString( sequence[ order[sequenceNext] ], "mad-") )
         myStatus->currentCity = MADRID;
-    else if (ofIsStringInString( sequence[ order[sequenceNext] ], "liv-") )
+    else if (ofIsStringInString( sequence[ order[sequenceNext] ], "lvp-") )
         myStatus->currentCity = LIVERPOOL;
-    
-    
+    else if (ofIsStringInString( sequence[ order[sequenceNext] ], "hsk-") )
+        myStatus->currentCity = HELSINKI;    
     
     ofSendMessage("changed");
 }
