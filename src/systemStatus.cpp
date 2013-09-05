@@ -26,6 +26,7 @@ void systemStatus::setup(){
     currentCity=MADRID;
     nextAutoTurnOff=1600;
     
+    
     ofxXmlSettings settings;
 
     if(!settings.loadFile("settings.xml"))
@@ -36,7 +37,7 @@ void systemStatus::setup(){
     offline=settings.getValue("settings:offline", 1);
     fullscreen=settings.getValue("settings:fullscreen", 0);
     fastmode=settings.getValue("settings:fastmode", 0);
-    midienabled=settings.getValue("settings:mode", 0);
+    midienabled=settings.getValue("settings:midi", 0);
     
     ofLog() << " current city is " << CITY;
     

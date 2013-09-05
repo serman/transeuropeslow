@@ -80,8 +80,9 @@ void testApp::update(){
     if(ofGetFrameNum()%1300==0)        myComm.sendToMotor();
     if(ofGetFrameNum()%1303==0)        myComm.sendToMotor();
     if(ofGetFrameNum()%220==0 && !myStatus.offline) {
-        if ( myStatus.CITY=="hsk" ) getRemoteMovie();
-        getRemoteSpeed(); //cada 4 segs aprox
+        if ( myStatus.CITY=="hsk" ){ getRemoteMovie();
+            getRemoteSpeed(); //cada 4 segs aprox
+        }
     }
     
 }
@@ -126,9 +127,9 @@ void testApp::draw(){
     if(myStatus.currentCity==MADRID)
         verdana_small.drawString("madrid",    112,70);
     else if(myStatus.currentCity==LIVERPOOL)
-        verdana_small.drawString("helsinki", 111,70);
+        verdana_small.drawString("liverpool", 111,70);
     else if(myStatus.currentCity==HELSINKI)
-        verdana_small.drawString("liverpool",  109,70);
+        verdana_small.drawString("helsinki",  109,70);
     
 }
 
@@ -280,7 +281,7 @@ void testApp::keyPressed(int key){
         myComm.sendToMotor();
     }
     else if (key == OF_KEY_UP){
-       // sendMidiNote();
+           midiOut.sendNoteOn(1, myStatus.currentCity,  current_note_value);
     }
     
     else{
@@ -296,7 +297,8 @@ void testApp::sendMidiNote(){
     }
 
 void testApp::sendMidiChange(){
-    int sendNote=myStatus.bikeSpeed*50;
+    int sendNote=myStatus.bikeSpeed*40;
+    if (sendNote>127) sendNote=127;
     //if(sendNote != current_note_value){
         //midiOut.sendNoteOn(1, myStatus.currentCity,  current_note_value);
         if (current_note_value>sendNote && current_note_value>0) current_note_value-=1;
@@ -306,6 +308,7 @@ void testApp::sendMidiChange(){
         //    ofLog() << current_note_value << "\n";
         if(current_note_value==0) current_note_value=1;
         midiOut.sendControlChange(1, 8, current_note_value);
+        
     //}
 }
 
@@ -375,6 +378,7 @@ void testApp::windowResized(int w, int h){
 //--------------------------------------------------------------
 void testApp::gotMessage(ofMessage msg){
     ofLog() << msg.message;
+    cout << "enviando nota";
     midiOut.sendNoteOn(1, myStatus.currentCity,  current_note_value);
     oscSendEOV();
 }
